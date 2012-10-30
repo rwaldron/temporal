@@ -1,7 +1,7 @@
 {
   "name": "temporal",
   "description": "Non-blocking, temporal task sequencing.",
-  "version": "0.1.0",
+  "version": "0.2.1",
   "homepage": "https://github.com/rwldrn/temporal",
   "author": {
     "name": "Rick Waldron",
@@ -33,5 +33,5 @@
   "devDependencies": {
     "grunt": "~0.3.17"
   },
-  "keywords": []
+  "keywords": [ "schedule", "task", "settimeout", "setinterval", "nexttick", "process", "sequence", "sequencing" ]
 }
