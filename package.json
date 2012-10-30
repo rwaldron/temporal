@@ -1,0 +1,37 @@
+{
+  "name": "schedule",
+  "description": "Non-blocking, temporal task sequencing.",
+  "version": "0.1.0",
+  "homepage": "https://github.com/rwldrn/schedule",
+  "author": {
+    "name": "Rick Waldron",
+    "email": "waldron.rick@gmail.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/rwldrn/schedule.git"
+  },
+  "bugs": {
+    "url": "https://github.com/rwldrn/schedule/issues"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/rwldrn/schedule/blob/master/LICENSE-MIT"
+    }
+  ],
+  "main": "lib/schedule",
+  "engines": {
+    "node": ">= 0.6.0"
+  },
+  "scripts": {
+    "test": "grunt test"
+  },
+  "dependencies": {
+    "es6-collections": "latest"
+  },
+  "devDependencies": {
+    "grunt": "~0.3.17"
+  },
+  "keywords": []
+}
