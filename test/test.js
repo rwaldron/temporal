@@ -97,11 +97,11 @@ exports[ "loops" ] = {
 
 
 
-exports[ "wait" ] = {
+exports[ "delay" ] = {
   setUp: function( done ) {
     done();
   },
-  wait: function( test ) {
+  delay: function( test ) {
     test.expect(7);
 
     var completed, times;
@@ -117,7 +117,7 @@ exports[ "wait" ] = {
       var temporaldAt = Date.now(),
           expectAt = temporaldAt + time;
 
-      temporal.wait( time, function( wait ) {
+      temporal.delay( time, function( delay ) {
         var actual = Date.now();
 
         test.ok(
@@ -139,7 +139,7 @@ exports[ "queue" ] = {
   setUp: function( done ) {
     done();
   },
-  wait: function( test ) {
+  delay: function( test ) {
     test.expect(3);
 
     var temporaldAt = Date.now(),
@@ -148,7 +148,7 @@ exports[ "queue" ] = {
     // Wait queue
     temporal.queue([
       {
-        wait: 100,
+        delay: 100,
         task: function() {
           var now = Date.now();
 
@@ -157,7 +157,7 @@ exports[ "queue" ] = {
         }
       },
       {
-        wait: 200,
+        delay: 200,
         task: function( task ) {
           var now = Date.now();
 
@@ -178,11 +178,11 @@ exports[ "queue" ] = {
     // Wait queue
     temporal.queue([
       {
-        wait: 100,
+        delay: 100,
         task: function( task ) {
           var now = Date.now();
 
-          test.ok( fuzzy(now, expectAt, 1), "queued wait fn 1: on time" );
+          test.ok( fuzzy(now, expectAt, 1), "queued delay fn 1: on time" );
           expectAt = now + 200;
         }
       },
@@ -216,13 +216,13 @@ exports[ "queue" ] = {
     // Wait queue
     queue = temporal.queue([
       {
-        wait: 100,
+        delay: 100,
         task: function() {
           test.ok( true );
         }
       },
       {
-        wait: 100,
+        delay: 100,
         task: function() {
           test.ok( true );
         }

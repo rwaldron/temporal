@@ -24,18 +24,19 @@ temporal.wait( 500, function() {
 });
 
 // Loop every n milliseconds, executing a task each time
-temporal.loop( 500, function( loop ) {
+temporal.loop( 500, function() {
 
   console.log( "Every 500ms..." );
 
-  // `loop` is a reference to the temporal instance
+  // |this| is a reference to the temporal instance
   // use it to cancel the loop by calling:
   //
-  loop.stop();
+  this.stop();
 
   // The number of times this loop has been executed:
-  loop.called; // number
+  this.called; // number
 
+  // The first argument to the callback is the same as |this|
 });
 
 // Queue a sequence of tasks: wait, wait
