@@ -1,6 +1,6 @@
 # schedule
 
-Non-blocking, temporal task sequencing.
+Non-blocking, temporal task sequencing. [EmpireJS Presentation](https://dl.dropbox.com/u/3531958/empirejs/)
 
 Note: `schedule` does NOT use `setTimeout` or `setInterval`
 
