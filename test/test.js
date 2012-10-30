@@ -1,4 +1,4 @@
-var scheduler = require("../lib/scheduler.js"),
+var temporal = require("../lib/temporal.js"),
     events = require("events"),
     util = require("util");
 
@@ -34,7 +34,7 @@ exports[ "context" ] = {
   loop: function( test ) {
     test.expect(1);
 
-    scheduler.loop( 200, function( context ) {
+    temporal.loop( 200, function( context ) {
       console.log( context );
 
       test.ok( context === this );
@@ -55,13 +55,13 @@ exports[ "loops" ] = {
   stop: function( test ) {
     test.expect(1);
 
-    var schedulerdAt, completeds, last;
+    var temporaldAt, completeds, last;
 
-    schedulerdAt = Date.now();
+    temporaldAt = Date.now();
 
     completeds = [];
 
-    scheduler.loop( 100, function( loop ) {
+    temporal.loop( 100, function( loop ) {
       // console.log( "a", a );
       if ( loop.called === 1 ) {
         completeds.push( loop.called );
@@ -69,7 +69,7 @@ exports[ "loops" ] = {
       }
     });
 
-    scheduler.loop( 100, function( loop ) {
+    temporal.loop( 100, function( loop ) {
       // console.log( "b", b );
       if ( loop.called === 3 ) {
         completeds.push( loop.called );
@@ -77,7 +77,7 @@ exports[ "loops" ] = {
       }
     });
 
-    last = scheduler.loop( 100, function( loop ) {
+    last = temporal.loop( 100, function( loop ) {
       // console.log( "c", c );
       if ( loop.called === 5 ) {
         completeds.push( loop.called );
@@ -114,10 +114,10 @@ exports[ "wait" ] = {
 
     times.forEach(function( time, k ) {
 
-      var schedulerdAt = Date.now(),
-          expectAt = schedulerdAt + time;
+      var temporaldAt = Date.now(),
+          expectAt = temporaldAt + time;
 
-      scheduler.wait( time, function( wait ) {
+      temporal.wait( time, function( wait ) {
         var actual = Date.now();
 
         test.ok(
@@ -142,11 +142,11 @@ exports[ "queue" ] = {
   wait: function( test ) {
     test.expect(3);
 
-    var schedulerdAt = Date.now(),
-        expectAt = schedulerdAt + 100;
+    var temporaldAt = Date.now(),
+        expectAt = temporaldAt + 100;
 
     // Wait queue
-    scheduler.queue([
+    temporal.queue([
       {
         wait: 100,
         task: function() {
@@ -162,7 +162,7 @@ exports[ "queue" ] = {
           var now = Date.now();
 
           test.ok( fuzzy(now, expectAt, 1), "queued fn 2: on time" );
-          test.equal( now, schedulerdAt + 300, "queue lapse correct" );
+          test.ok( fuzzy(now, temporaldAt + 300, 1), "queue lapse correct" );
 
           test.done();
         }
@@ -172,11 +172,11 @@ exports[ "queue" ] = {
   loop: function( test ) {
     test.expect(6);
 
-    var schedulerdAt = Date.now(),
-        expectAt = schedulerdAt + 100;
+    var temporaldAt = Date.now(),
+        expectAt = temporaldAt + 100;
 
     // Wait queue
-    scheduler.queue([
+    temporal.queue([
       {
         wait: 100,
         task: function( task ) {
@@ -193,13 +193,13 @@ exports[ "queue" ] = {
 
           if ( task.called === 1 ) {
             test.ok( fuzzy(now, expectAt, 1), "queued loop fn 1: on time" );
-            test.ok( fuzzy(now, schedulerdAt + 300, 1), "queue lapse correct" );
+            test.ok( fuzzy(now, temporaldAt + 300, 1), "queue lapse correct" );
           }
 
           if ( task.called === 2 ) {
             test.ok( "stop" in task );
             test.ok( fuzzy(now, expectAt, 1), "queued loop fn 2: on time" );
-            test.ok( fuzzy(now, schedulerdAt + 500, 1), "queue lapse correct" );
+            test.ok( fuzzy(now, temporaldAt + 500, 1), "queue lapse correct" );
             test.done();
           }
 
@@ -214,7 +214,7 @@ exports[ "queue" ] = {
     var queue;
 
     // Wait queue
-    queue = scheduler.queue([
+    queue = temporal.queue([
       {
         wait: 100,
         task: function() {

@@ -1,26 +1,26 @@
 {
-  "name": "scheduler",
+  "name": "temporal",
   "description": "Non-blocking, temporal task sequencing.",
   "version": "0.1.0",
-  "homepage": "https://github.com/rwldrn/scheduler",
+  "homepage": "https://github.com/rwldrn/temporal",
   "author": {
     "name": "Rick Waldron",
     "email": "waldron.rick@gmail.com"
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/rwldrn/scheduler.git"
+    "url": "git://github.com/rwldrn/temporal.git"
   },
   "bugs": {
-    "url": "https://github.com/rwldrn/scheduler/issues"
+    "url": "https://github.com/rwldrn/temporal/issues"
   },
   "licenses": [
     {
       "type": "MIT",
-      "url": "https://github.com/rwldrn/scheduler/blob/master/LICENSE-MIT"
+      "url": "https://github.com/rwldrn/temporal/blob/master/LICENSE-MIT"
     }
   ],
-  "main": "lib/scheduler",
+  "main": "lib/temporal",
   "engines": {
     "node": ">= 0.6.0"
   },

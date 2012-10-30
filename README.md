@@ -1,34 +1,34 @@
-# scheduler
+# temporal
 
 Non-blocking, temporal task sequencing. [EmpireJS Presentation](https://dl.dropbox.com/u/3531958/empirejs/)
 
-Note: `scheduler` does NOT use `setTimeout` or `setInterval`
+Note: `temporal` does NOT use `setTimeout` or `setInterval`
 
 ## Getting Started
 
 ```bash
-npm install scheduler
+npm install temporal
 ```
 
 
 ## Examples
 
 ```javascript
-var scheduler = require('scheduler');
+var temporal = require('temporal');
 
 // Wait n milliseconds, execute a task
-scheduler.wait( 500, function() {
+temporal.wait( 500, function() {
 
   console.log( "500ms later..." );
 
 });
 
 // Loop every n milliseconds, executing a task each time
-scheduler.loop( 500, function( loop ) {
+temporal.loop( 500, function( loop ) {
 
   console.log( "Every 500ms..." );
 
-  // `loop` is a reference to the scheduler instance
+  // `loop` is a reference to the temporal instance
   // use it to cancel the loop by calling:
   //
   loop.stop();
@@ -40,17 +40,17 @@ scheduler.loop( 500, function( loop ) {
 
 // Queue a sequence of tasks: wait, wait
 // Each wait time is added to the prior wait times.
-scheduler.queue([
+temporal.queue([
   {
     wait: 500,
     task: function() {
-      // Executes 500ms after scheduler.queue(...) is called
+      // Executes 500ms after temporal.queue(...) is called
     }
   },
   {
     wait: 500,
     task: function() {
-      // Executes 1000ms after scheduler.queue(...) is called
+      // Executes 1000ms after temporal.queue(...) is called
 
       // The last "wait" task will emit an "ended" event
     }
@@ -59,17 +59,17 @@ scheduler.queue([
 
 // Queue a sequence of tasks: wait then loop
 // Each wait time is added to the prior wait times.
-scheduler.queue([
+temporal.queue([
   {
     wait: 500,
     task: function() {
-      // Executes 500ms after scheduler.queue(...) is called
+      // Executes 500ms after temporal.queue(...) is called
     }
   },
   {
     loop: 100,
     task: function() {
-      // Executes 600ms after scheduler.queue(...) is called
+      // Executes 600ms after temporal.queue(...) is called
 
       // Executes every 100ms thereafter.
     }
