@@ -1,34 +1,34 @@
-# schedule
+# scheduler
 
 Non-blocking, temporal task sequencing. [EmpireJS Presentation](https://dl.dropbox.com/u/3531958/empirejs/)
 
-Note: `schedule` does NOT use `setTimeout` or `setInterval`
+Note: `scheduler` does NOT use `setTimeout` or `setInterval`
 
 ## Getting Started
 
 ```bash
-npm install schedule
+npm install scheduler
 ```
 
 
 ## Examples
 
 ```javascript
-var schedule = require('schedule');
+var scheduler = require('scheduler');
 
 // Wait n milliseconds, execute a task
-schedule.wait( 500, function() {
+scheduler.wait( 500, function() {
 
   console.log( "500ms later..." );
 
 });
 
 // Loop every n milliseconds, executing a task each time
-schedule.loop( 500, function( loop ) {
+scheduler.loop( 500, function( loop ) {
 
   console.log( "Every 500ms..." );
 
-  // `loop` is a reference to the schedule instance
+  // `loop` is a reference to the scheduler instance
   // use it to cancel the loop by calling:
   //
   loop.stop();
@@ -40,17 +40,17 @@ schedule.loop( 500, function( loop ) {
 
 // Queue a sequence of tasks: wait, wait
 // Each wait time is added to the prior wait times.
-schedule.queue([
+scheduler.queue([
   {
     wait: 500,
     task: function() {
-      // Executes 500ms after schedule.queue(...) is called
+      // Executes 500ms after scheduler.queue(...) is called
     }
   },
   {
     wait: 500,
     task: function() {
-      // Executes 1000ms after schedule.queue(...) is called
+      // Executes 1000ms after scheduler.queue(...) is called
 
       // The last "wait" task will emit an "ended" event
     }
@@ -59,17 +59,17 @@ schedule.queue([
 
 // Queue a sequence of tasks: wait then loop
 // Each wait time is added to the prior wait times.
-schedule.queue([
+scheduler.queue([
   {
     wait: 500,
     task: function() {
-      // Executes 500ms after schedule.queue(...) is called
+      // Executes 500ms after scheduler.queue(...) is called
     }
   },
   {
     loop: 100,
     task: function() {
-      // Executes 600ms after schedule.queue(...) is called
+      // Executes 600ms after scheduler.queue(...) is called
 
       // Executes every 100ms thereafter.
     }

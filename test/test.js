@@ -1,4 +1,4 @@
-var schedule = require("../lib/schedule.js"),
+var scheduler = require("../lib/scheduler.js"),
     events = require("events"),
     util = require("util");
 
@@ -34,7 +34,7 @@ exports[ "context" ] = {
   loop: function( test ) {
     test.expect(1);
 
-    schedule.loop( 200, function( context ) {
+    scheduler.loop( 200, function( context ) {
       console.log( context );
 
       test.ok( context === this );
@@ -55,13 +55,13 @@ exports[ "loops" ] = {
   stop: function( test ) {
     test.expect(1);
 
-    var scheduledAt, completeds, last;
+    var schedulerdAt, completeds, last;
 
-    scheduledAt = Date.now();
+    schedulerdAt = Date.now();
 
     completeds = [];
 
-    schedule.loop( 100, function( loop ) {
+    scheduler.loop( 100, function( loop ) {
       // console.log( "a", a );
       if ( loop.called === 1 ) {
         completeds.push( loop.called );
@@ -69,7 +69,7 @@ exports[ "loops" ] = {
       }
     });
 
-    schedule.loop( 100, function( loop ) {
+    scheduler.loop( 100, function( loop ) {
       // console.log( "b", b );
       if ( loop.called === 3 ) {
         completeds.push( loop.called );
@@ -77,7 +77,7 @@ exports[ "loops" ] = {
       }
     });
 
-    last = schedule.loop( 100, function( loop ) {
+    last = scheduler.loop( 100, function( loop ) {
       // console.log( "c", c );
       if ( loop.called === 5 ) {
         completeds.push( loop.called );
@@ -114,10 +114,10 @@ exports[ "wait" ] = {
 
     times.forEach(function( time, k ) {
 
-      var scheduledAt = Date.now(),
-          expectAt = scheduledAt + time;
+      var schedulerdAt = Date.now(),
+          expectAt = schedulerdAt + time;
 
-      schedule.wait( time, function( wait ) {
+      scheduler.wait( time, function( wait ) {
         var actual = Date.now();
 
         test.ok(
@@ -142,11 +142,11 @@ exports[ "queue" ] = {
   wait: function( test ) {
     test.expect(3);
 
-    var scheduledAt = Date.now(),
-        expectAt = scheduledAt + 100;
+    var schedulerdAt = Date.now(),
+        expectAt = schedulerdAt + 100;
 
     // Wait queue
-    schedule.queue([
+    scheduler.queue([
       {
         wait: 100,
         task: function() {
@@ -162,7 +162,7 @@ exports[ "queue" ] = {
           var now = Date.now();
 
           test.ok( fuzzy(now, expectAt, 1), "queued fn 2: on time" );
-          test.equal( now, scheduledAt + 300, "queue lapse correct" );
+          test.equal( now, schedulerdAt + 300, "queue lapse correct" );
 
           test.done();
         }
@@ -172,11 +172,11 @@ exports[ "queue" ] = {
   loop: function( test ) {
     test.expect(6);
 
-    var scheduledAt = Date.now(),
-        expectAt = scheduledAt + 100;
+    var schedulerdAt = Date.now(),
+        expectAt = schedulerdAt + 100;
 
     // Wait queue
-    schedule.queue([
+    scheduler.queue([
       {
         wait: 100,
         task: function( task ) {
@@ -193,13 +193,13 @@ exports[ "queue" ] = {
 
           if ( task.called === 1 ) {
             test.ok( fuzzy(now, expectAt, 1), "queued loop fn 1: on time" );
-            test.ok( fuzzy(now, scheduledAt + 300, 1), "queue lapse correct" );
+            test.ok( fuzzy(now, schedulerdAt + 300, 1), "queue lapse correct" );
           }
 
           if ( task.called === 2 ) {
             test.ok( "stop" in task );
             test.ok( fuzzy(now, expectAt, 1), "queued loop fn 2: on time" );
-            test.ok( fuzzy(now, scheduledAt + 500, 1), "queue lapse correct" );
+            test.ok( fuzzy(now, schedulerdAt + 500, 1), "queue lapse correct" );
             test.done();
           }
 
@@ -214,7 +214,7 @@ exports[ "queue" ] = {
     var queue;
 
     // Wait queue
-    queue = schedule.queue([
+    queue = scheduler.queue([
       {
         wait: 100,
         task: function() {
