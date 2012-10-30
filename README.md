@@ -17,7 +17,7 @@ npm install temporal
 var temporal = require('temporal');
 
 // Wait n milliseconds, execute a task
-temporal.wait( 500, function() {
+temporal.delay( 500, function() {
 
   console.log( "500ms later..." );
 
@@ -39,30 +39,30 @@ temporal.loop( 500, function() {
   // The first argument to the callback is the same as |this|
 });
 
-// Queue a sequence of tasks: wait, wait
-// Each wait time is added to the prior wait times.
+// Queue a sequence of tasks: delay, delay
+// Each delay time is added to the prior delay times.
 temporal.queue([
   {
-    wait: 500,
+    delay: 500,
     task: function() {
       // Executes 500ms after temporal.queue(...) is called
     }
   },
   {
-    wait: 500,
+    delay: 500,
     task: function() {
       // Executes 1000ms after temporal.queue(...) is called
 
-      // The last "wait" task will emit an "ended" event
+      // The last "delay" task will emit an "ended" event
     }
   }
 ]);
 
-// Queue a sequence of tasks: wait then loop
-// Each wait time is added to the prior wait times.
+// Queue a sequence of tasks: delay then loop
+// Each delay time is added to the prior delay times.
 temporal.queue([
   {
-    wait: 500,
+    delay: 500,
     task: function() {
       // Executes 500ms after temporal.queue(...) is called
     }
