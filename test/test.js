@@ -208,7 +208,7 @@ exports[ "queue" ] = {
       }
     ]);
   },
-  end: function( test ) {
+  ended: function( test ) {
     test.expect(3);
 
     var queue;
