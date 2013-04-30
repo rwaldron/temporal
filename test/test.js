@@ -1,6 +1,6 @@
-var temporal = require("../lib/temporal.js"),
-    events = require("events"),
-    util = require("util");
+"use strict";
+
+var temporal = require("../lib/temporal.js");
 
 
 function sum( a, b ) {
@@ -112,12 +112,12 @@ exports[ "delay" ] = {
       10, 100, 150, 500, 750, 1000, 3000
     ];
 
-    times.forEach(function( time, k ) {
+    times.forEach(function( time ) {
 
       var temporaldAt = Date.now(),
           expectAt = temporaldAt + time;
 
-      temporal.delay( time, function( delay ) {
+      temporal.delay( time, function() {
         var actual = Date.now();
 
         test.ok(
@@ -158,7 +158,7 @@ exports[ "queue" ] = {
       },
       {
         delay: 200,
-        task: function( task ) {
+        task: function() {
           var now = Date.now();
 
           test.ok( fuzzy(now, expectAt, 1), "queued fn 2: on time" );
@@ -179,7 +179,7 @@ exports[ "queue" ] = {
     temporal.queue([
       {
         delay: 100,
-        task: function( task ) {
+        task: function() {
           var now = Date.now();
 
           test.ok( fuzzy(now, expectAt, 1), "queued delay fn 1: on time" );
