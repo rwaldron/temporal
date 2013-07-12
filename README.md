@@ -2,8 +2,10 @@
 
 Non-blocking, temporal task sequencing.
 
-### [EmpireJS Presentation](https://dl.dropboxusercontent.com/u/3531958/empirejs/index.html)
-### [CascadiaJS Presentation](https://dl.dropboxusercontent.com/u/3531958/cascadiajs/index.html)
+## Presentations
+
+- [EmpireJS](https://dl.dropboxusercontent.com/u/3531958/empirejs/index.html)
+- [CascadiaJS](https://dl.dropboxusercontent.com/u/3531958/cascadiajs/index.html)
 
 
 Note: `temporal` does NOT use `setTimeout` or `setInterval`
