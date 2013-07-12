@@ -1,6 +1,10 @@
 # temporal
 
-Non-blocking, temporal task sequencing. [EmpireJS Presentation](https://dl.dropbox.com/u/3531958/empirejs/)
+Non-blocking, temporal task sequencing.
+
+[EmpireJS Presentation](https://dl.dropboxusercontent.com/u/3531958/empirejs/index.html)
+[CascadiaJS Presentation](https://dl.dropboxusercontent.com/u/3531958/cascadiajs/index.html)
+
 
 Note: `temporal` does NOT use `setTimeout` or `setInterval`
 
@@ -14,7 +18,7 @@ npm install temporal
 ## Examples
 
 ```javascript
-var temporal = require('temporal');
+var temporal = require("temporal");
 
 // Wait n milliseconds, execute a task
 temporal.delay( 500, function() {
