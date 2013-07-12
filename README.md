@@ -1,6 +1,6 @@
 # temporal
 
-Non-blocking, temporal task sequencing.
+Non-blocking, temporal task sequencing. `temporal` does NOT use `setTimeout` or `setInterval`.
 
 ## Presentations
 
@@ -8,7 +8,7 @@ Non-blocking, temporal task sequencing.
 - [CascadiaJS](https://dl.dropboxusercontent.com/u/3531958/cascadiajs/index.html)
 
 
-Note: `temporal` does NOT use `setTimeout` or `setInterval`
+
 
 ## Getting Started
 
