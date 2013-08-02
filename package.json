@@ -1,7 +1,7 @@
 {
   "name": "temporal",
   "description": "Non-blocking, temporal task sequencing.",
-  "version": "0.2.7",
+  "version": "0.2.8",
   "homepage": "https://github.com/rwldrn/temporal",
   "author": {
     "name": "Rick Waldron",
@@ -28,7 +28,7 @@
     "test": "grunt test"
   },
   "dependencies": {
-    "es6-collections": "latest"
+    "es6-collections": ">=0.2.0"
   },
   "devDependencies": {
     "grunt": "0.4.1",
