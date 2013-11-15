@@ -134,6 +134,24 @@ exports[ "delay" ] = {
   }
 };
 
+exports[ "repeat" ] = {
+  setUp: function( done ) {
+    done();
+  },
+  repeat: function( test ) {
+    test.expect(1);
+
+    var completed = 0;
+
+    temporal.repeat( 2, 500, function() {
+      if ( ++completed === 2 ) {
+        test.ok(true, "repeat called twice");
+        test.done();
+      }
+    });
+  }
+};
+
 
 exports[ "queue" ] = {
   setUp: function( done ) {
