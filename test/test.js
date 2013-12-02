@@ -47,6 +47,25 @@ exports[ "context" ] = {
   }
 };
 
+exports[ "clear" ] = {
+  setUp: function( done ) {
+    done();
+  },
+  clear: function( test ) {
+    test.expect(1);
+
+    temporal.loop( 200, function() {
+      // this will never happen.
+      test.ok(false);
+    });
+
+    setTimeout(function() {
+      temporal.clear();
+      test.ok(true);
+      test.done();
+    }, 100);
+  }
+};
 
 exports[ "loops" ] = {
   setUp: function( done ) {
@@ -226,7 +245,7 @@ exports[ "queue" ] = {
       }
     ]);
   },
-  ended: function( test ) {
+  end: function( test ) {
     test.expect(3);
 
     var queue;
@@ -247,7 +266,41 @@ exports[ "queue" ] = {
       }
     ]);
 
-    queue.on("ended", function() {
+    queue.on("end", function() {
+      test.ok( true );
+      test.done();
+    });
+  },
+  stop: function( test ) {
+    test.expect(1);
+
+    var queue = temporal.queue([
+      {
+        delay: 50,
+        task: function() {
+          test.ok( false );
+        }
+      },
+      {
+        delay: 50,
+        task: function() {
+          test.ok( false );
+        }
+      },
+      {
+        delay: 50,
+        task: function() {
+          test.ok( false );
+        }
+      }
+    ]);
+
+    // Stop before any tasks run.
+    setTimeout(function() {
+      queue.stop();
+    }, 10);
+
+    queue.on("stop", function() {
       test.ok( true );
       test.done();
     });

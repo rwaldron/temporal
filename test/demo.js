@@ -4,7 +4,7 @@ var temporal = require("../lib/temporal.js"),
     startAt = Date.now();
 
 
-temporal.queue([
+var queue = temporal.queue([
   {
     delay: 500,
     task: function() {
@@ -24,7 +24,8 @@ temporal.queue([
     }
   }
 ]);
-
+// queue.stop();
+console.log( queue );
 
 
 // temporal.queue([
