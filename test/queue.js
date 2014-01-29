@@ -5,6 +5,7 @@ var temporal = require("../lib/temporal"),
 
 var queue = temporal.queue([]);
 
+// Command line access
 repl.start("> ").context.queue = queue;
 
 for(i = 1; i <= 5; i++) {
@@ -21,6 +22,8 @@ for(i = 1; i <= 5; i++) {
 
 setTimeout(function() {
 	delay = 500;
+	
+	console.log(Date.now()-then, "later...");
 	then = Date.now();
 
 	for(i = 1; i <= 5; i++) {
@@ -34,7 +37,7 @@ setTimeout(function() {
 
 		delay = 500 + (i*10);
 	}
-}, 3000);
+}, 5000);
 
 // setTimeout(function() {
 // 	queue.stop();
