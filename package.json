@@ -1,23 +1,23 @@
 {
   "name": "temporal",
   "description": "Non-blocking, temporal task sequencing.",
-  "version": "0.2.10",
-  "homepage": "https://github.com/rwldrn/temporal",
+  "version": "0.3.0",
+  "homepage": "https://github.com/rwaldron/temporal",
   "author": {
     "name": "Rick Waldron",
     "email": "waldron.rick@gmail.com"
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/rwldrn/temporal.git"
+    "url": "git://github.com/rwaldron/temporal.git"
   },
   "bugs": {
-    "url": "https://github.com/rwldrn/temporal/issues"
+    "url": "https://github.com/rwaldron/temporal/issues"
   },
   "licenses": [
     {
       "type": "MIT",
-      "url": "https://github.com/rwldrn/temporal/blob/master/LICENSE-MIT"
+      "url": "https://github.com/rwaldron/temporal/blob/master/LICENSE-MIT"
     }
   ],
   "main": "lib/temporal",
