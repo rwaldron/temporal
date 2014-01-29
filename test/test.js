@@ -318,6 +318,50 @@ Object.keys(exports).forEach(function( exp ) {
 
 
 
+exports["failsafe"] = {
+  setUp: function(done) {
+    done();
+  },
+  tearDown: function(done) {
+    temporal.clear();
+    done();
+  },
+  missed: function(test) {
+    test.expect(3);
+
+    // The previousTick patch ensures that all
+    // three of these tasks are run.
+
+    temporal.queue([{
+      wait: 50,
+      task: function() {
+        test.ok(true);
+
+        console.log(1);
+
+        var blocking = Date.now() + 30;
+
+        while (Date.now() < blocking) {}
+      }
+    }, {
+      wait: 10,
+      task: function() {
+        console.log(2);
+        test.ok(true);
+      }
+    }, {
+      wait: 30,
+      task: function() {
+        console.log(3);
+        test.ok(true);
+        test.done();
+      }
+    }]);
+  }
+};
+
+
+
 
 
 
