@@ -28,13 +28,14 @@
     "test": "grunt test"
   },
   "dependencies": {
-    "es6-collections": ">=0.2.0"
+    "es6-shim": "latest"
   },
   "devDependencies": {
     "grunt": "0.4.1",
     "grunt-contrib-jshint": "0.3.0",
     "grunt-contrib-nodeunit": "latest",
-    "grunt-contrib-watch": "latest"
+    "grunt-contrib-watch": "latest",
+    "grunt-jsbeautifier": "~0.2.2"
   },
   "keywords": [ "schedule", "task", "settimeout", "setinterval", "nexttick", "process", "sequence", "sequencing" ]
 }
