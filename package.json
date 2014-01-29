@@ -7,6 +7,9 @@
     "name": "Rick Waldron",
     "email": "waldron.rick@gmail.com"
   },
+  "contributors": [
+    { "name": "Matthieu Dehaussy", "email": "<mdehaussy@carlipa.com>" }
+  ],
   "repository": {
     "type": "git",
     "url": "git://github.com/rwaldron/temporal.git"
