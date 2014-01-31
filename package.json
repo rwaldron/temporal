@@ -1,14 +1,15 @@
 {
   "name": "temporal",
   "description": "Non-blocking, temporal task sequencing.",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "homepage": "https://github.com/rwaldron/temporal",
   "author": {
     "name": "Rick Waldron",
     "email": "waldron.rick@gmail.com"
   },
   "contributors": [
-    { "name": "Matthieu Dehaussy", "email": "<mdehaussy@carlipa.com>" }
+    { "name": "Matthieu Dehaussy", "email": "<mdehaussy@carlipa.com>" },
+    { "name": "Taha Hesham", "email": "<taha@wizylabs.com>" }
   ],
   "repository": {
     "type": "git",
