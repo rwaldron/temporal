@@ -1,5 +1,8 @@
 # temporal
 
+
+[![Build Status](https://travis-ci.org/rwaldron/temporal.png?branch=master)](https://travis-ci.org/rwaldron/temporal)
+
 Non-blocking, temporal task sequencing. `temporal` does NOT use `setTimeout` or `setInterval`.
 
 ## Presentations
