@@ -1,7 +1,7 @@
 {
   "name": "temporal",
   "description": "Non-blocking, temporal task sequencing.",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "homepage": "https://github.com/rwaldron/temporal",
   "author": {
     "name": "Rick Waldron",
@@ -26,7 +26,7 @@
   ],
   "main": "lib/temporal",
   "engines": {
-    "node": ">= 0.10.0"
+    "node": ">= 0.8.0"
   },
   "scripts": {
     "test": "grunt test"
