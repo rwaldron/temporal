@@ -188,6 +188,19 @@ exports["repeat"] = {
         test.done();
       }
     });
+  },
+  returns: function(test) {
+    test.expect(5);
+
+    var repeat = temporal.repeat(2, 500, function() {});
+
+    test.ok(repeat);
+    test.ok(repeat.stop);
+    test.ok(repeat.calledAt);
+    test.ok(repeat.now);
+    test.equal(repeat.called, 0);
+
+    test.done();
   }
 };
 
