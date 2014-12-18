@@ -326,7 +326,7 @@ exports["queue"] = {
 
 
     temporal.on("idle", function() {
-      test.ok(fuzzy(temporaldAt - startedAt, 1000, 1), "~1000ms");
+      test.ok(fuzzy(temporaldAt - startedAt, 1000, 1), "~1000ms " + (temporaldAt - startedAt));
       temporal.clear();
       test.done();
     });
