@@ -25,17 +25,21 @@ npm install temporal
 ```javascript
 var temporal = require("temporal");
 
-// Wait n milliseconds, execute a task
-temporal.delay( 500, function() {
+temporal.on("idle", function() {
+  console.log("Temporal is idle");  
+});
 
-  console.log( "500ms later..." );
+// Wait 500 milliseconds, execute a task
+temporal.delay(500, function() {
+
+  console.log("500ms later...");
 
 });
 
 // Loop every n milliseconds, executing a task each time
-temporal.loop( 500, function() {
+temporal.loop(500, function() {
 
-  console.log( "Every 500ms..." );
+  console.log("Every 500ms...");
 
   // |this| is a reference to the temporal instance
   // use it to cancel the loop by calling:
@@ -47,6 +51,7 @@ temporal.loop( 500, function() {
 
   // The first argument to the callback is the same as |this|
 });
+
 
 // Queue a sequence of tasks: delay, delay
 // Each delay time is added to the prior delay times.
