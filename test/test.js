@@ -65,7 +65,7 @@ exports["context"] = {
     test.expect(1);
 
     temporal.loop(200, function(context) {
-      console.log(context);
+      // console.log(context);
 
       test.ok(context === this);
 
@@ -88,16 +88,21 @@ exports["clear"] = {
   clear: function(test) {
     test.expect(1);
 
-    temporal.loop(200, function() {
+    temporal.wait(20, function() {
       // this will never happen.
+      console.log("shouldn't happen");
       test.ok(false);
+    });
+
+    temporal.wait(10, function() {
+      console.log("kill it");
     });
 
     setTimeout(function() {
       temporal.clear();
       test.ok(true);
       test.done();
-    }, 100);
+    }, 1);
   }
 };
 
@@ -163,14 +168,11 @@ exports["delay"] = {
     done();
   },
   delay: function(test) {
-    test.expect(7);
+    test.expect(13);
 
-    var completed, times;
-
-    completed = 0;
-
-    times = [
-      10, 100, 150, 500, 750, 1000, 3000
+    var completed = 0;
+    var times = [
+      1, 2, 5, 10, 20, 50, 100, 150, 200, 250, 500, 750, 1000
     ];
 
     times.forEach(function(time) {
@@ -189,7 +191,7 @@ exports["delay"] = {
         if (++completed === times.length) {
           test.done();
         }
-        console.log(completed, time);
+        // console.log(completed, time);
       });
     });
   }
@@ -238,6 +240,38 @@ exports["queue"] = {
   tearDown: function(done) {
     temporal.clear();
     done();
+  },
+  speed: function(test) {
+    test.expect(4);
+
+    var temporaldAt = Date.now(),
+      expectAt = temporaldAt + 1;
+
+    // Wait queue
+    temporal.queue([{
+      delay: 1,
+      task: function() {
+        var now = Date.now();
+        test.ok(fuzzy(now, expectAt, 1), "queued fn 1: on time");
+        expectAt = now + 2;
+      }
+    }, {
+      delay: 2,
+      task: function() {
+        var now = Date.now();
+        test.ok(fuzzy(now, expectAt, 1), "queued fn 1: on time");
+        expectAt = now + 5;
+      }
+    }, {
+      delay: 5,
+      task: function() {
+        var now = Date.now();
+        test.ok(fuzzy(now, expectAt, 1), "queued fn 2: on time");
+        test.ok(fuzzy(now, temporaldAt + 7, 1), "queue lapse correct");
+
+        test.done();
+      }
+    }]);
   },
   delay: function(test) {
     test.expect(3);
@@ -357,23 +391,6 @@ exports["queue"] = {
   }
 };
 
-
-Object.keys(exports).forEach(function(exp) {
-  var setUp = exports[exp].setUp;
-  exports[exp].setUp = function(done) {
-    console.log("\n");
-    setUp(done);
-  };
-
-  exports[exp].tearDown = function(done) {
-    temporal.clear();
-    done();
-  };
-
-});
-
-
-
 exports["failsafe"] = {
   setUp: function(done) {
     done();
@@ -393,8 +410,6 @@ exports["failsafe"] = {
       task: function() {
         test.ok(true);
 
-        console.log(1);
-
         var blocking = Date.now() + 30;
 
         while (Date.now() < blocking) {}
@@ -402,41 +417,16 @@ exports["failsafe"] = {
     }, {
       wait: 10,
       task: function() {
-        console.log(2);
+        // console.log(2);
         test.ok(true);
       }
     }, {
       wait: 30,
       task: function() {
-        console.log(3);
+        // console.log(3);
         test.ok(true);
         test.done();
       }
     }]);
   }
 };
-
-
-
-
-
-
-/*
-  ======== A Handy Little Nodeunit Reference ========
-  https://github.com/caolan/nodeunit
-
-  Test methods:
-    test.expect(numAssertions)
-    test.done()
-  Test assertions:
-    test.ok(value, [message])
-    test.equal(actual, expected, [message])
-    test.notEqual(actual, expected, [message])
-    test.deepEqual(actual, expected, [message])
-    test.notDeepEqual(actual, expected, [message])
-    test.strictEqual(actual, expected, [message])
-    test.notStrictEqual(actual, expected, [message])
-    test.throws(block, [error], [message])
-    test.doesNotThrow(block, [error], [message])
-    test.ifError(value)
-*/
