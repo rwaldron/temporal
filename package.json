@@ -36,10 +36,10 @@
   },
   "devDependencies": {
     "grunt": "0.4.1",
-    "grunt-contrib-jshint": "0.3.0",
+    "grunt-contrib-jshint": "latest",
     "grunt-contrib-nodeunit": "latest",
     "grunt-contrib-watch": "latest",
-    "grunt-jsbeautifier": "~0.2.2"
+    "grunt-jsbeautifier": "latest"
   },
-  "keywords": [ "schedule", "task", "settimeout", "setinterval", "nexttick", "process", "sequence", "sequencing" ]
+  "keywords": [ "schedule", "task", "settimeout", "setinterval", "nexttick", "process", "sequence", "sequencing", "loop", "repeat", "wait", "delay", "sleep" ]
 }
