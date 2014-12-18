@@ -1,6 +1,7 @@
 "use strict";
 
 var temporal = require("../lib/temporal.js");
+var Emitter = require("events").EventEmitter;
 
 
 function sum(a, b) {
@@ -8,24 +9,49 @@ function sum(a, b) {
 }
 
 function fuzzy(actual, expected, tolerance) {
-  var diff;
-
-  tolerance = tolerance === undefined ? 10 : tolerance;
-
-  if (actual === expected) {
-    return true;
-  }
-  diff = fuzzy.lastDiff = Math.abs(actual - expected);
-
-  if (diff <= tolerance) {
-    return true;
-  }
-  return false;
+  return actual === expected ||
+    (Math.abs(actual - expected) <= (tolerance === undefined ? 10 : tolerance));
 }
 
-fuzzy.lastDiff = 0;
 
+exports["temporal"] = {
+  setUp: function(done) {
+    done();
+  },
+  tearDown: function(done) {
+    temporal.clear();
+    done();
+  },
+  emitter: function(test) {
+    test.expect(1);
+    test.ok(temporal instanceof Emitter);
+    test.done();
+  },
+  busy: function(test) {
+    test.expect(2);
 
+    temporal.on("busy", function() {
+      test.ok(true);
+    });
+
+    temporal.wait(1, function() {
+      test.ok(true);
+      test.done();
+    });
+  },
+  idle: function(test) {
+    test.expect(2);
+
+    temporal.on("idle", function() {
+      test.ok(true);
+      test.done();
+    });
+
+    temporal.wait(1, function() {
+      test.ok(true);
+    });
+  }
+};
 
 exports["context"] = {
   setUp: function(done) {
