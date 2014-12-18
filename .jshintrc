@@ -16,6 +16,7 @@
   "evil": true,
   "sub": true,
   "unused": true,
+  "esnext": true,
   "globals": {
     "exports": true,
     "require": true,
