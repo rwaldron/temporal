@@ -273,6 +273,68 @@ exports["queue"] = {
       }
     }]);
   },
+  hundredms: function(test) {
+    test.expect(100);
+
+    var queue = [];
+    var k = 0;
+
+    for (var i = 0; i < 100; i++) {
+      queue.push({
+        delay: 1,
+        task: function() {
+          var now = Date.now();
+          test.ok(fuzzy(now, expectAt, 1), "queued fn " + k + ": on time");
+          expectAt = now + 1;
+        }
+      });
+
+      k++;
+    }
+
+    var temporaldAt = Date.now();
+    var expectAt = temporaldAt + 1;
+
+
+    temporal.on("idle", function() {
+      temporal.clear();
+      test.done();
+    });
+    // Wait queue
+    temporal.queue(queue);
+
+  },
+  hundredfps: function(test) {
+    test.expect(101);
+
+    var queue = [];
+    for (var i = 0; i < 100; i++) {
+      queue.push({
+        delay: 10,
+        task: function() {
+          temporaldAt = Date.now();
+          test.ok(fuzzy(temporaldAt, expectAt, 1), "queued fn: on time");
+          expectAt = temporaldAt + 10;
+        }
+      });
+
+    }
+
+    var startedAt = Date.now();
+    var temporaldAt = Date.now();
+    var expectAt = temporaldAt + 10;
+
+
+    temporal.on("idle", function() {
+      test.ok(fuzzy(temporaldAt - startedAt, 1000, 1), "~1000ms");
+      temporal.clear();
+      test.done();
+    });
+    // Wait queue
+    temporal.queue(queue);
+
+  },
+
   delay: function(test) {
     test.expect(3);
 
