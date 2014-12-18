@@ -284,7 +284,7 @@ exports["queue"] = {
         delay: 1,
         task: function() {
           var now = Date.now();
-          test.ok(fuzzy(now, expectAt, 1), "queued fn " + k + ": on time");
+          test.ok(fuzzy(now, expectAt, 5), "queued fn " + k + ": on time");
           expectAt = now + 1;
         }
       });
@@ -300,9 +300,8 @@ exports["queue"] = {
       temporal.clear();
       test.done();
     });
-    // Wait queue
-    temporal.queue(queue);
 
+    temporal.queue(queue);
   },
   // hundredfps: function(test) {
   //   test.expect(101);
