@@ -3,7 +3,17 @@
 
 [![Build Status](https://travis-ci.org/rwaldron/temporal.png?branch=master)](https://travis-ci.org/rwaldron/temporal)
 
-Non-blocking, temporal task sequencing. `temporal` does NOT use `setTimeout` or `setInterval`.
+Non-blocking, temporal task sequencing. `temporal` does NOT use `setTimeout` or `setInterval`, however there is a cost for using "recursive" `setImmediate` to create an extremely fast, async execution loop. CPU usage is expected to peak when using `temporal`, because the internal ticker needs to execute as fast as possible and as many times per second as possible. It's this speed that allows `temporal` to review the internal schedule for tasks to execute more than once per millisecond, which is needed to create preferential execution cycles for hardware programming. 
+
+`temporal` is for writing timing sensitive programs that are expected to be the primary process running on a given system, where the power source itself is tuned to accommodate _that program_ specifically. Concrete examples include: 
+
+- walking robots (autonomous and remote control bipeds, quadrupeds or hexapods)
+- driving robots (autonomous and remote control rovers)
+- flying robots (autonomous and remote control single and multi-rotor helicopter)
+- water based robots (underwater rovs, surface boat-likes)
+
+`temporal` is not good for sparse task scheduling. 
+
 
 ## Presentations
 
