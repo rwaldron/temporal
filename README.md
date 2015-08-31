@@ -1,7 +1,7 @@
 # temporal
 
 
-[![Build Status](https://travis-ci.org/rwaldron/temporal.png?branch=master)](https://travis-ci.org/rwaldron/temporal)
+[![Build Status](https://travis-ci.org/rwaldron/temporal.svg)](https://travis-ci.org/rwaldron/temporal)
 
 Non-blocking, temporal task sequencing. `temporal` does NOT use `setTimeout` or `setInterval`, however there is a cost for using "recursive" `setImmediate` to create an extremely fast, async execution loop. CPU usage is expected to peak when using `temporal`, because the internal ticker needs to execute as fast as possible and as many times per second as possible. It's this speed that allows `temporal` to review the internal schedule for tasks to execute more than once per millisecond, which is needed to create preferential execution cycles for hardware programming. 
 
