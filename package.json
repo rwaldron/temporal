@@ -1,7 +1,7 @@
 {
   "name": "temporal",
   "description": "Non-blocking, temporal task sequencing and scheduling.",
-  "version": "0.4.1",
+  "version": "0.5.0",
   "homepage": "https://github.com/rwaldron/temporal",
   "author": {
     "name": "Rick Waldron",
