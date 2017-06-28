@@ -8,8 +8,14 @@
     "email": "waldron.rick@gmail.com"
   },
   "contributors": [
-    { "name": "Matthieu Dehaussy", "email": "<mdehaussy@carlipa.com>" },
-    { "name": "Taha Hesham", "email": "<taha@wizylabs.com>" }
+    {
+      "name": "Matthieu Dehaussy",
+      "email": "<mdehaussy@carlipa.com>"
+    },
+    {
+      "name": "Taha Hesham",
+      "email": "<taha@wizylabs.com>"
+    }
   ],
   "repository": {
     "type": "git",
@@ -31,9 +37,7 @@
   "scripts": {
     "test": "grunt"
   },
-  "dependencies": {
-    "es6-shim": "latest"
-  },
+  "dependencies": {},
   "devDependencies": {
     "grunt": "0.4.1",
     "grunt-contrib-jshint": "latest",
@@ -41,5 +45,19 @@
     "grunt-contrib-watch": "latest",
     "grunt-jsbeautifier": "latest"
   },
-  "keywords": [ "schedule", "task", "settimeout", "setinterval", "nexttick", "process", "sequence", "sequencing", "loop", "repeat", "wait", "delay", "sleep" ]
+  "keywords": [
+    "schedule",
+    "task",
+    "settimeout",
+    "setinterval",
+    "nexttick",
+    "process",
+    "sequence",
+    "sequencing",
+    "loop",
+    "repeat",
+    "wait",
+    "delay",
+    "sleep"
+  ]
 }
