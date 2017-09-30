@@ -106,6 +106,41 @@ exports["clear"] = {
   }
 };
 
+exports["clearById"] = {
+  setUp: function(done) {
+    done();
+  },
+  tearDown: function(done) {
+    temporal.clear();
+    done();
+  },
+  clearById: function(test) {
+    test.expect(1);
+
+    temporal.delay({
+      time: 10,
+      id: "myId",
+      operation: function() {
+        // this should not happen.
+        console.log("kill it");
+        test.ok(false);
+        test.done();
+      }
+    });
+
+    temporal.delay(20, function() {
+      // this should happen.
+      test.ok(true);
+      test.done();
+    });
+
+    setTimeout(function() {
+      temporal.clear("myId");
+    }, 1);
+
+  }
+};
+
 exports["loops"] = {
   setUp: function(done) {
     done();
