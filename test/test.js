@@ -1,7 +1,10 @@
 "use strict";
 
+require("./common/bootstrap");
+
 var temporal = require("../lib/temporal.js");
 var Emitter = require("events").EventEmitter;
+var sinon = require("sinon");
 
 
 function sum(a, b) {
@@ -13,6 +16,11 @@ function fuzzy(actual, expected, tolerance) {
     (Math.abs(actual - expected) <= (tolerance === undefined ? 10 : tolerance));
 }
 
+
+exports.setUp = function(done) {
+  temporal.test.entriesById.clear();
+  done();
+};
 
 exports["temporal"] = {
   setUp: function(done) {
@@ -79,39 +87,80 @@ exports["context"] = {
 
 exports["clear"] = {
   setUp: function(done) {
+    this.sandbox = sinon.sandbox.create();
+    this.sandbox.spy(temporal, "removeAllListeners");
     done();
   },
   tearDown: function(done) {
+    this.sandbox.restore();
     temporal.clear();
     done();
   },
-  clear: function(test) {
-    test.expect(1);
+  clearAllWithNoId: function(test) {
+    test.expect(2);
 
     temporal.wait(20, function() {
       // this will never happen.
-      console.log("shouldn't happen");
       test.ok(false);
     });
 
     temporal.wait(10, function() {
-      console.log("kill it");
+      // this will never happen.
+      test.ok(false);
     });
 
-    setTimeout(function() {
+    setTimeout(() => {
       temporal.clear();
+      test.equal(temporal.removeAllListeners.callCount, 1);
       test.ok(true);
       test.done();
     }, 1);
   },
+
+  clearAllWithId: function(test) {
+    test.expect(2);
+
+    temporal.delay({
+      time: 5,
+      id: "clearAllWithId",
+      task: function() {
+        // Should never be reached
+        test.ok(false);
+      }
+    });
+    temporal.delay({
+      time: 10,
+      id: "clearAllWithId",
+      task: function() {
+        // Should never be reached
+        test.ok(false);
+      }
+    });
+    temporal.delay({
+      time: 15,
+      id: "clearAllWithId",
+      task: function() {
+        // Should never be reached
+        test.ok(false);
+      }
+    });
+
+    setTimeout(() => {
+      temporal.clear("clearAllWithId");
+      test.equal(temporal.removeAllListeners.callCount, 1);
+      test.ok(true);
+      test.done();
+    }, 1);
+  },
+
   clearById: function(test) {
-    test.expect(1);
+    test.expect(2);
 
     temporal.delay({
       time: 10,
       id: "myId",
-      operation: function() {
-        // this should not happen.
+      task: function() {
+        // Should never be reached
         console.log("kill it");
         test.ok(false);
       }
@@ -123,11 +172,81 @@ exports["clear"] = {
       test.done();
     });
 
-    setTimeout(function() {
+    setTimeout(() => {
       temporal.clear("myId");
+      test.equal(temporal.removeAllListeners.callCount, 0);
     }, 1);
 
-  }
+  },
+
+  clearByTaskInstance: function(test) {
+    test.expect(2);
+
+    var task = temporal.delay({
+      time: 10,
+      id: "foo",
+      task: function() {
+        // Should never be reached
+        test.ok(false);
+      }
+    });
+    temporal.delay(15, function() {
+      // this should happen.
+      test.ok(true);
+      test.done();
+    });
+
+    setTimeout(() => {
+      temporal.clear(task);
+      test.equal(temporal.removeAllListeners.callCount, 0);
+    }, 1);
+  },
+
+  clearMultipleById: function(test) {
+    test.expect(2);
+
+    var id = "foo";
+
+    temporal.delay({
+      time: 10,
+      id: id,
+      task: function() {
+        // Should never be reached
+        test.ok(false);
+      }
+    });
+
+    temporal.delay({
+      time: 20,
+      id: id,
+      task: function() {
+        // Should never be reached
+        test.ok(false);
+      }
+    });
+
+    temporal.delay({
+      time: 30,
+      id: id,
+      task: function() {
+        // Should never be reached
+        test.ok(false);
+      }
+    });
+
+    temporal.delay(40, function() {
+      // this should happen.
+      test.ok(true);
+      test.done();
+    });
+
+    setTimeout(() => {
+      temporal.clear(id);
+      test.equal(temporal.removeAllListeners.callCount, 0);
+    }, 1);
+
+  },
+
 };
 
 exports["loops"] = {
@@ -191,6 +310,7 @@ exports["delay"] = {
     temporal.clear();
     done();
   },
+
   delay: function(test) {
     test.expect(13);
 

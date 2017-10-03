@@ -48,11 +48,11 @@ temporal.delay(500, function() {
 
 // Add a task with an id
 temporal.delay({
+  id: "myTask",
   time:500, 
-  operation: function() {
+  task: function() {
     console.log("500ms later...");
   }),
-  id: "myTask"
 });
 
 // Selectively delete tasks
