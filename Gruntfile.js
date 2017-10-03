@@ -12,7 +12,10 @@ module.exports = function(grunt) {
   grunt.initConfig({
     pkg: "<json:package.json>",
     nodeunit: {
-      files: ["test/**/*.js"]
+      files: [
+        "test/common/bootstrap.js",
+        "test/**/*.js"
+      ]
     },
     jshint: {
       all: {

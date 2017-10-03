@@ -46,6 +46,18 @@ temporal.delay(500, function() {
 
 });
 
+// Add a task with an id
+temporal.delay({
+  id: "myTask",
+  time:500, 
+  task: function() {
+    console.log("500ms later...");
+  }),
+});
+
+// Selectively delete tasks
+temporal.clear("myTask");
+
 // Loop every n milliseconds, executing a task each time
 temporal.loop(500, function() {
 
