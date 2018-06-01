@@ -9,8 +9,9 @@ function sum(a, b) {
 }
 
 function fuzzy(actual, expected, tolerance) {
+  tolerance = tolerance || 10;
   return actual === expected ||
-    (Math.abs(actual - expected) <= (tolerance === undefined ? 10 : tolerance));
+    (Math.abs(actual - expected) <= tolerance);
 }
 
 
