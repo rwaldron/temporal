@@ -9,8 +9,14 @@ function sum(a, b) {
 }
 
 function fuzzy(actual, expected, tolerance) {
+  tolerance = tolerance || 10;
   return actual === expected ||
-    (Math.abs(actual - expected) <= (tolerance === undefined ? 10 : tolerance));
+    (Math.abs(actual - expected) <= tolerance);
+}
+
+function hrNow() {
+  let hrtime = process.hrtime();
+  return (hrtime[0] * 1e9 + hrtime[1]);
 }
 
 
@@ -65,7 +71,6 @@ exports["context"] = {
     test.expect(1);
 
     temporal.loop(200, function(context) {
-      // console.log(context);
 
       test.ok(context === this);
 
@@ -119,7 +124,7 @@ exports["loops"] = {
 
     var temporaldAt, completeds, last;
 
-    temporaldAt = Date.now();
+    temporaldAt = hrNow();
 
     completeds = [];
 
@@ -150,14 +155,11 @@ exports["loops"] = {
 
     last.on("stop", function() {
       var result = completeds.reduce(sum, 0);
-
       test.equal(result, 9, "sum of loop.called counters is 9");
       test.done();
     });
   }
 };
-
-
 
 exports["delay"] = {
   setUp: function(done) {
@@ -177,14 +179,14 @@ exports["delay"] = {
 
     times.forEach(function(time) {
 
-      var temporaldAt = Date.now(),
-        expectAt = temporaldAt + time;
+      var temporaldAt = hrNow(),
+        expectAt = temporaldAt + time * 1e6;
 
       temporal.delay(time, function() {
-        var actual = Date.now();
+        var actual = hrNow();
 
         test.ok(
-          fuzzy(actual, expectAt),
+          fuzzy(actual, expectAt, 10 * 1e6),
           "time: " + time + " ( " + Math.abs(actual - expectAt) + ")"
         );
 
@@ -244,30 +246,30 @@ exports["queue"] = {
   speed: function(test) {
     test.expect(4);
 
-    var temporaldAt = Date.now(),
-      expectAt = temporaldAt + 1;
+    var temporaldAt = hrNow(),
+      expectAt = temporaldAt + 1e6;
 
     // Wait queue
     temporal.queue([{
       delay: 1,
       task: function() {
-        var now = Date.now();
-        test.ok(fuzzy(now, expectAt, 1), "queued fn 1: on time");
-        expectAt = now + 2;
+        var now = hrNow();
+        test.ok(fuzzy(now, expectAt, 1e6), "queued fn 1: on time");
+        expectAt = now + 2 * 1e6;
       }
     }, {
       delay: 2,
       task: function() {
-        var now = Date.now();
-        test.ok(fuzzy(now, expectAt, 1), "queued fn 1: on time");
-        expectAt = now + 5;
+        var now = hrNow();
+        test.ok(fuzzy(now, expectAt, 1e6), "queued fn 1: on time");
+        expectAt = now + 5 * 1e6;
       }
     }, {
       delay: 5,
       task: function() {
-        var now = Date.now();
-        test.ok(fuzzy(now, expectAt, 1), "queued fn 2: on time");
-        test.ok(fuzzy(now, temporaldAt + 7, 1), "queue lapse correct");
+        var now = hrNow();
+        test.ok(fuzzy(now, expectAt, 1e6), "queued fn 2: on time");
+        test.ok(fuzzy(now, temporaldAt + 8 * 1e6, 2 * 1e6), "queue lapse correct");
 
         test.done();
       }
@@ -279,21 +281,21 @@ exports["queue"] = {
     var queue = [];
     var k = 0;
 
-    for (var i = 0; i < 100; i++) {
+    for (let i = 0; i < 100; i++) {
       queue.push({
         delay: 1,
         task: function() {
-          var now = Date.now();
-          test.ok(fuzzy(now, expectAt, 5), "queued fn " + k + ": on time");
-          expectAt = now + 1;
+          var now = hrNow();
+          test.ok(fuzzy(now, expectAt, 1 * 1e9), "queued fn " + k + ": on time");
+          expectAt = now + 1 * 1e9;
         }
       });
 
       k++;
     }
 
-    var temporaldAt = Date.now();
-    var expectAt = temporaldAt + 1;
+    var temporaldAt = hrNow();
+    var expectAt = temporaldAt + 1 * 1e9;
 
 
     temporal.on("idle", function() {
@@ -303,59 +305,59 @@ exports["queue"] = {
 
     temporal.queue(queue);
   },
-  // hundredfps: function(test) {
-  //   test.expect(101);
+  hundredfps: function(test) {
+    test.expect(100);
 
-  //   var queue = [];
-  //   for (var i = 0; i < 100; i++) {
-  //     queue.push({
-  //       delay: 10,
-  //       task: function() {
-  //         temporaldAt = Date.now();
-  //         test.ok(fuzzy(temporaldAt, expectAt, 1), "queued fn: on time");
-  //         expectAt = temporaldAt + 10;
-  //       }
-  //     });
+    var queue = [];
 
-  //   }
+    for (let i = 0; i < 100; i++) {
+      queue.push({
+        delay: 10,
+        task: function() {
+          temporaldAt = hrNow();
+          test.ok(fuzzy(temporaldAt, expectAt, 2 * 1e6), "queued fn: on time");
+          expectAt = temporaldAt + 10 * 1e6;
+        }
+      });
 
-  //   var startedAt = Date.now();
-  //   var temporaldAt = Date.now();
-  //   var expectAt = temporaldAt + 10;
+    }
 
+    var temporaldAt = hrNow();
+    //var startedAt = hrNow();
+    var expectAt = temporaldAt + 10 * 1e6;
 
-  //   temporal.on("idle", function() {
-  //     test.ok(fuzzy(temporaldAt - startedAt, 1000, 1), "~1000ms " + (temporaldAt - startedAt));
-  //     temporal.clear();
-  //     test.done();
-  //   });
-  //   // Wait queue
-  //   temporal.queue(queue);
+    temporal.on("idle", function() {
+      //test.ok(fuzzy(temporaldAt - startedAt, 1000 * 1e6, 2 * 1e6), "~1000ms " + (temporaldAt - startedAt));
+      temporal.clear();
+      test.done();
+    });
+    // Wait queue
+    temporal.queue(queue);
 
-  // },
+  },
 
   delay: function(test) {
     test.expect(3);
 
-    var temporaldAt = Date.now(),
-      expectAt = temporaldAt + 100;
+    var temporaldAt = hrNow(),
+      expectAt = temporaldAt + 100 * 1e6;
 
     // Wait queue
     temporal.queue([{
       delay: 100,
       task: function() {
-        var now = Date.now();
+        var now = hrNow();
 
-        test.ok(fuzzy(now, expectAt, 1), "queued fn 1: on time");
-        expectAt = now + 200;
+        test.ok(fuzzy(now, expectAt, 1e6), "queued fn 1: on time");
+        expectAt = now + 200 * 1e6;
       }
     }, {
       delay: 200,
       task: function() {
-        var now = Date.now();
+        var now = hrNow();
 
-        test.ok(fuzzy(now, expectAt, 1), "queued fn 2: on time");
-        test.ok(fuzzy(now, temporaldAt + 300, 1), "queue lapse correct");
+        test.ok(fuzzy(now, expectAt, 1e6), "queued fn 2: on time");
+        test.ok(fuzzy(now, temporaldAt + 300 * 1e6, 1e6), "queue lapse correct");
 
         test.done();
       }
@@ -364,36 +366,36 @@ exports["queue"] = {
   loop: function(test) {
     test.expect(6);
 
-    var temporaldAt = Date.now(),
-      expectAt = temporaldAt + 100;
+    var temporaldAt = hrNow(),
+      expectAt = temporaldAt + 100 * 1e6;
 
     // Wait queue
     temporal.queue([{
       delay: 100,
       task: function() {
-        var now = Date.now();
+        var now = hrNow();
 
-        test.ok(fuzzy(now, expectAt, 1), "queued delay fn 1: on time");
-        expectAt = now + 200;
+        test.ok(fuzzy(now, expectAt, 1e6), "queued delay fn 1: on time (" + now + ", " + expectAt + ")");
+        expectAt = now + 200 * 1e6;
       }
     }, {
       loop: 200,
       task: function(task) {
-        var now = Date.now();
+        var now = hrNow();
 
         if (task.called === 1) {
-          test.ok(fuzzy(now, expectAt, 1), "queued loop fn 1: on time");
-          test.ok(fuzzy(now, temporaldAt + 300, 1), "queue lapse correct");
+          test.ok(fuzzy(now, expectAt, 1e6), "queued loop fn 1: on time (" + now + ", " + expectAt + ")");
+          test.ok(fuzzy(now, temporaldAt + 300 * 1e6, 1e6), "queue lapse correct");
         }
 
         if (task.called === 2) {
           test.ok("stop" in task);
-          test.ok(fuzzy(now, expectAt, 1), "queued loop fn 2: on time");
-          test.ok(fuzzy(now, temporaldAt + 500, 1), "queue lapse correct");
+          test.ok(fuzzy(now, expectAt, 1e6), "queued loop fn 2: on time (" + now + ", " + expectAt + ")");
+          test.ok(fuzzy(now, temporaldAt + 500 * 1e6, 1e6), "queue lapse correct");
           test.done();
         }
 
-        expectAt = now + 200;
+        expectAt = now + 200 * 1e6;
       }
     }]);
   },
@@ -471,9 +473,9 @@ exports["failsafe"] = {
       task: function() {
         test.ok(true);
 
-        var blocking = Date.now() + 30;
+        var blocking = hrNow() + 30 * 1e6;
 
-        while (Date.now() < blocking) {}
+        while (hrNow() < blocking) {}
       }
     }, {
       wait: 10,
@@ -489,5 +491,85 @@ exports["failsafe"] = {
         test.done();
       }
     }]);
+  }
+};
+
+exports["Res_0.1"] = {
+  setUp: function(done) {
+    done();
+  },
+  tearDown: function(done) {
+    temporal.clear();
+    done();
+  },
+  delay: function(test) {
+    test.expect(8);
+
+    temporal.resolution(0.1);
+
+    var completed = 0;
+    var times = [
+      1.5, 2.0, 2.5, 3.3, 5.0, 7.5, 10.0, 11.2
+    ];
+
+    times.forEach(function(time) {
+
+      var temporaldAt = hrNow(),
+        expectAt = temporaldAt + time * 1e6;
+
+      temporal.delay(time, function() {
+        var actual = hrNow();
+
+        test.ok(
+          fuzzy(actual, expectAt, 10 * 1e6),
+          "time: " + time + " ( " + Math.abs(actual - expectAt) + ")"
+        );
+
+        if (++completed === times.length) {
+          test.done();
+        }
+        // console.log(completed, time);
+      });
+    });
+  }
+};
+
+exports["Res_0.01"] = {
+  setUp: function(done) {
+    done();
+  },
+  tearDown: function(done) {
+    temporal.clear();
+    done();
+  },
+  delay: function(test) {
+    test.expect(8);
+
+    temporal.resolution(0.01);
+
+    var completed = 0;
+    var times = [
+      1.50, 2.00, 2.50, 3.33, 5.00, 7.50, 10.00, 11.2
+    ];
+
+    times.forEach(function(time) {
+
+      var temporaldAt = hrNow(),
+        expectAt = temporaldAt + (time * 1e6);
+
+      temporal.delay(time, function() {
+        var actual = hrNow();
+
+        test.ok(
+          fuzzy(actual, expectAt, 1 * 1e6),
+          "time: " + time + " (" + (actual - expectAt) + ")"
+        );
+
+        if (++completed === times.length) {
+          test.done();
+        }
+
+      });
+    });
   }
 };

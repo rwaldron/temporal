@@ -12,6 +12,8 @@ Non-blocking, temporal task sequencing. `temporal` does NOT use `setTimeout` or 
 - flying robots (autonomous and remote control single and multi-rotor helicopter)
 - water based robots (underwater rovs, surface boat-likes)
 
+`temporal` allows for sub-millisecond task scheduling through us of the resolution method. 
+
 `temporal` is not good for sparse task scheduling. 
 
 
@@ -100,6 +102,24 @@ temporal.queue([
     }
   }
 ]);
+```
+
+```javascript
+var temporal = require("temporal");
+
+temporal.on("idle", function() {
+  console.log("Temporal is idle");  
+});
+
+// Set temporal resolution to 0.1ms
+temporal.resolution(0.1);
+
+// Wait 0.7 milliseconds, execute a task
+temporal.delay(0.7, function() {
+
+  console.log("0.7ms later...");
+
+});
 ```
 
 
