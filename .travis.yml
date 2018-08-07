@@ -1,9 +1,9 @@
 language: node_js
 sudo: false
 node_js:
-  - 4
   - 6
   - 8
+  - 10
 before_script:
   - npm install -g grunt-cli
 compiler: clang
