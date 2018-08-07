@@ -196,6 +196,18 @@ exports["delay"] = {
         // console.log(completed, time);
       });
     });
+  },
+  order: function(test) {
+    // If temporal does not allow delays to be enqueud
+    // "out of order", test.done() will never be hit
+    test.expect(2);
+    temporal.delay(10, () => {
+      test.ok(true, "10 ms delay called");
+      test.done();
+    });
+    temporal.delay(5, () => {
+      test.ok(true, "5 ms delay called");
+    });
   }
 };
 
