@@ -1,12 +1,5 @@
-"use strict";
-module.exports = function(grunt) {
-  function readOptionalJSON( filepath ) {
-    var data = {};
-    try {
-      data = grunt.file.readJSON( filepath );
-    } catch(e) {}
-    return data;
-  }
+module.exports = grunt => {
+  const jshintrc = grunt.file.readJSON("./.jshintrc");
 
   // Project configuration.
   grunt.initConfig({
@@ -17,7 +10,7 @@ module.exports = function(grunt) {
     jshint: {
       all: {
         src: ["grunt.js", "lib/**/*.js", "test/**/*.js"],
-        options: readOptionalJSON(".jshintrc")
+        options: jshintrc
       }
     },
     jsbeautifier: {
@@ -63,7 +56,5 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks("grunt-contrib-nodeunit");
   grunt.loadNpmTasks("grunt-jsbeautifier");
   // Default task.
-  grunt.registerTask( "default", [ "jsbeautifier", "jshint", "nodeunit" ] );
-
-
+  grunt.registerTask("default", ["jsbeautifier", "jshint", "nodeunit"]);
 };
