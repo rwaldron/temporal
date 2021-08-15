@@ -12,7 +12,7 @@ Non-blocking, temporal task sequencing. `temporal` does NOT use `setTimeout` or 
 - flying robots (autonomous and remote control single and multi-rotor helicopter)
 - water based robots (underwater rovs, surface boat-likes)
 
-`temporal` allows for sub-millisecond task scheduling through us of the resolution method. 
+`temporal` allows for sub-millisecond task scheduling through use of the `resolution` method. 
 
 `temporal` is not good for sparse task scheduling. 
 
